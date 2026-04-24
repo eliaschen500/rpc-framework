@@ -1,0 +1,18 @@
+syntax = "proto3";
+package rpc_proto;
+
+// Framed over the wire as: [Magic:4][BodyLen:4][RpcRequest serialized]
+message RpcRequest {
+    string   service_name = 1;  // e.g. "example.HelloService"
+    string   method_name  = 2;  // e.g. "SayHello"
+    uint32   request_id   = 3;  // monotonically increasing per connection
+    bytes    args_data    = 4;  // serialized request protobuf (method-specific)
+}
+
+// Framed the same way in the reverse direction.
+message RpcResponse {
+    uint32   request_id   = 1;
+    bool     success      = 2;
+    bytes    result_data  = 3;  // serialized response protobuf (method-specific)
+    string   error_msg    = 4;  // set when success == false
+}

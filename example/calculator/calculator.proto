@@ -1,0 +1,21 @@
+syntax = "proto3";
+package example;
+
+option cc_generic_services = true;
+
+message CalcRequest {
+    double a = 1;
+    double b = 2;
+}
+
+message CalcResponse {
+    double result = 1;
+    string error  = 2;  // non-empty on division by zero etc.
+}
+
+service CalcService {
+    rpc Add(CalcRequest) returns (CalcResponse);
+    rpc Sub(CalcRequest) returns (CalcResponse);
+    rpc Mul(CalcRequest) returns (CalcResponse);
+    rpc Div(CalcRequest) returns (CalcResponse);
+}
